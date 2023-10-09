@@ -1,0 +1,76 @@
+import mysql.connector
+
+# Conecta-se ao banco de dados MySQL
+conn = mysql.connector.connect(
+    host="<0.0.0.0.0.0.0.0>",
+    user="<Teste_Testando>",
+    password="<000000000>",
+    database="<Tarefas_Data>"
+)
+
+cursor = conn.cursor()
+
+# Cria a tabela "tarefas" se ela não existir
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS tarefas (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        descricao VARCHAR(255),
+        concluida BOOLEAN
+    )
+''')
+
+# Commit para salvar as alterações
+conn.commit()
+conn.close()
+
+
+import mysql.connector
+
+def criar_tarefa(descricao):
+    conn = mysql.connector.connect(
+        host="<0.0.0.0.0.0.0.0>",
+        user="<Teste_Testando>",
+        password="<000000000>",
+        database="<Tarefas_Data>"
+    )
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO tarefas (descricao, concluida) VALUES (%s, %s)", (descricao, False))
+    conn.commit()
+    conn.close()
+
+def editar_tarefa(id, nova_descricao):
+    conn = mysql.connector.connect(
+        host="<0.0.0.0.0.0.0.0>",
+        user="<Teste_Testando>",
+        password="<000000000>",
+        database="<Tarefas_Data>"
+    )
+    cursor = conn.cursor()
+    cursor.execute("UPDATE tarefas SET descricao = %s WHERE id = %s", (nova_descricao, id))
+    conn.commit()
+    conn.close()
+
+def excluir_tarefa(id):
+    conn = mysql.connector.connect(
+        host="<0.0.0.0.0.0.0.0>",
+        user="<Teste_Testando>",
+        password="<000000000>",
+        database="<Tarefas_Data>"
+    )
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM tarefas WHERE id = %s", (id,))
+    conn.commit()
+    conn.close()
+
+def listar_tarefas():
+    conn = mysql.connector.connect(
+        host="<0.0.0.0.0.0.0.0>",
+        user="<Teste_Testando>",
+        password="<000000000>",
+        database="<Tarefas_Data>"
+    )
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM tarefas")
+    tarefas = cursor.fetchall()
+    conn.close()
+    return tarefas
